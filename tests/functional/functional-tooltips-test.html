@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" debug="true">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -9,6 +9,8 @@
 	
 	<script type="text/javascript" src="../../lib/prototype.js"></script>
 	<script type="text/javascript" src="../../lib/scriptaculous.js?load=builder,effects"></script>
+	
+	<script type="text/javascript" src="../../firebug/firebug.js"></script>
 	
 	<script type="text/javascript" src="../../tooltips.js"></script>
 	<link rel="stylesheet" href="../../tooltips.css" type="text/css" />
@@ -25,7 +27,7 @@
 	<h1>Tooltips Functional Test</h1>
 	
 	<ul>
-		<li><a href="#" title="Tooltip test text" class="help">Link text...</a></li>
+		<li><a href="#" title="Tooltip test text" class="help"><span><img src="../img.gif" alt="Image description" id="img1" />Link text...</span></a></li>
 		<li><a href="#" title="Tooltip test textTooltip test textTooltip test textTooltip test textTooltip test textTooltip test text	" class="help">Link text...</a></li>
 		<li><a href="#" title="http://swik.net/Typo/Encytemedia/This+Site+is+Moving/403y" class="help">Link text...</a></li>
 		<li><p title="This is formatted text. &#013; Line breaks are used&#013;to format it." class="help">Link text...</p></li>
@@ -35,6 +37,12 @@
 	
 	<form action="#" method="get">
 		<input type="text" name="some_name" value="Some value" id="some_name" title="This field is required" class="help" />
+		<br />
+		<select name="select" id="select" size="1">
+			<optgroup label="Label Text">
+				<option value="Value" selected="selected" label="Label Text">  </option>
+			</optgroup>
+		</select>
 		<p><input type="submit" value="Continue &rarr;" title="Some title" /></p>
 	</form>
 	

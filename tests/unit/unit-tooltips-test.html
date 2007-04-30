@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" debug="true">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Tooltips Unit Test</title>
+	
+	<script type="text/javascript" src="../../lib/prototype.js"></script>
+	<script type="text/javascript" src="../../lib/scriptaculous.js"></script>
+	<script type="text/javascript" src="../../lib/unittest.js"></script>
+	
+	<script type="text/javascript" src="../../firebug/firebug.js"></script>
+	
+	<script type="text/javascript" src="../../tooltips.js"></script>
+	<link rel="stylesheet" href="../../tooltips.css" type="text/css" />
+	
+	<link rel="stylesheet" href="../test.css" type="text/css" />
+	
+	<style type="text/css" media="screen">
+		.tooltip {
+			font: bold 12px/1.3 Arial, sans-serif;
+		}
+	</style>
+	
+</head>
+
+<body>
+	<h1>Tooltips Unit Test</h1>
+	
+	<!-- Log output -->
+	<div id="testlog"> </div>
+	
+	<br />
+	
+	<ul>
+		<li><a href="#" title="Tooltip test text" id="test1"><span><img src="../img.gif" alt="Image description" id="img1" /> Link text...</span></a></li>
+		<li><a href="#" title="Tooltip test textTooltip test textTooltip test textTooltip test textTooltip test textTooltip test text" id="test2">Link text...</a></li>
+		<li><a href="#" title="http://swik.net/Typo/Encytemedia/This+Site+is+Moving/403y" id="test3">Link text...</a></li>
+		<li><p title="This is formatted text. &#013; Line breaks are used&#013;to format it." id="test4">Link text...</p></li>
+	</ul>
+	
+	<p style="position:absolute; right: 10px; width:300px;"><a href="#" id="test5" title="Tooltip test text Tooltip test text Tooltip test text Tooltip test text Tooltip test text Tooltip test text">Hover me long-long way, baby!</a></p>
+	
+	<form action="#" method="get">
+		<input type="text" name="test6" value="Some value" id="test6" title="This field is required" />
+		<br />
+		<select name="select" id="select" size="1">
+			<optgroup label="Label Text">
+				<option value="Value" selected="selected" label="Label Text">  </option>
+			</optgroup>
+		</select>
+		<p><input type="submit" value="Continue &rarr;" title="Some title" /></p>
+	</form>
+	
+		
+	<!-- Tests follow -->
+	<script type="text/javascript" language="javascript" charset="utf-8">
+	// <![CDATA[
+
+		new Test.Unit.Runner({
+			
+		testTooltipsBasics: function() { with(this) {
+			var myTooltip1 = new Tooltip('test1');
+			assertInstanceOf(Tooltip, myTooltip1);
+			assertEqual($('test1').title, '');
+			assertEqual($('img1').alt, '');
+		}},
+		testTooltipsDisplay: function() { with(this) {
+			var myTooltip2 = new Tooltip('test2');
+			myTooltip2.xCord = 100;
+			myTooltip2.yCord = 200;
+			myTooltip2.appear();
+			
+			assertEqual('DIV', document.body.childNodes[0].tagName);
+			assertEqual('tooltip', document.body.childNodes[0].className);
+			
+			assertEqual('250px', Element.getStyle(document.body.childNodes[0], 'width'));
+			
+			// Test disposes correctly #1
+			myTooltip2.hide();
+			wait(300, function() { with(this) {
+				assertNotEqual('DIV', document.body.childNodes[0].tagName);
+				assertNotEqual('tooltip', document.body.childNodes[0].className);
+				
+				// Test disposes correctly #2
+				myTooltip2.appear();
+				wait(100, function() { with(this) {
+					assertEqual('DIV', document.body.childNodes[0].tagName);
+					assertEqual('tooltip', document.body.childNodes[0].className);
+					
+					myTooltip2.hide();
+					wait(300, function() { with(this) {
+						assertNotEqual('DIV', document.body.childNodes[0].tagName);
+						assertNotEqual('tooltip', document.body.childNodes[0].className);
+						
+						// Test alignment setting change
+						myTooltip2.xCord = 900;
+						myTooltip2.yCord = 200;
+						myTooltip2.appear();
+						wait(500, function() { with(this) {
+							assertEqual('DIV', document.body.childNodes[0].tagName);
+							assertEqual('tooltip', document.body.childNodes[0].className);
+							assertEqual('right', myTooltip2.options.align);
+							assertEqual('663px', document.body.childNodes[0].style.left);
+							// Test disposes correctly #3
+							myTooltip2.hide();
+							wait(300, function() { with(this) {
+								assertNotEqual('DIV', document.body.childNodes[0].tagName);
+								assertNotEqual('tooltip', document.body.childNodes[0].className);
+							}});
+						}});
+					}});
+				}});
+				
+			}});
+			
+		}},
+		testMouseBehaviour: function() { with(this) {
+			var myTooltip3 = new Tooltip('test3');
+			Event.simulateMouse('test3', 'mouseover', {pointerX:100, pointerY:240});
+			
+			assert(myTooltip3.timeout);
+			
+			wait(600, function() { with(this) {
+				assertEqual('DIV', document.body.childNodes[0].tagName);
+				assertEqual('tooltip', document.body.childNodes[0].className);
+				
+				assertEqual('93px', Element.getStyle(document.body.childNodes[0], 'left'));
+				assertEqual('252px', Element.getStyle(document.body.childNodes[0], 'top'));
+				
+				Event.simulateMouse('test3', 'mouseout');
+				wait(300, function() { with(this) {
+					assertNotEqual('DIV', document.body.childNodes[0].tagName);
+					assertNotEqual('tooltip', document.body.childNodes[0].className);
+				}});
+			}});
+		}}
+		
+		}, "testlog");
+	// ]]>
+	</script>
+</body>
+</html>

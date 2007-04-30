@@ -19,7 +19,7 @@ Tooltip.prototype = {
 
 		// If descendant elements has 'alt' attribute defined, clear it
 		this.el.descendants().each(function(el){
-			if(el.readAttribute('alt'))
+			if(Element.readAttribute(el, 'alt'))
 				el.alt = "";
 		});
 	},
