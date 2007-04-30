@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Tooltips Functional Test</title>
+	
+	<script type="text/javascript" src="../../lib/prototype.js"></script>
+	<script type="text/javascript" src="../../lib/scriptaculous.js"></script>
+	
+	<script type="text/javascript" src="../../tooltips.js"></script>
+	<link rel="stylesheet" href="../../tooltips.css" type="text/css" />
+	
+	<style type="text/css" media="screen">
+		.tooltip {
+			font: bold 12px/1.3 Arial, sans-serif;
+		}
+	</style>
+	
+</head>
+
+<body>
+	<h1>Tooltips Functional Test</h1>
+	
+	<ul>
+		<li><a href="#" title="Tooltip test text" class="help">Link text...</a></li>
+		<li><a href="#" title="Tooltip test textTooltip test textTooltip test textTooltip test textTooltip test textTooltip test text	" class="help">Link text...</a></li>
+		<li><a href="#" title="http://swik.net/Typo/Encytemedia/This+Site+is+Moving/403y" class="help">Link text...</a></li>
+		<li><p title="This is formatted text. &#013; Line breaks are used&#013;to format it." class="help">Link text...</p></li>
+	</ul>
+	
+	<p style="position:absolute; right: 10px; width:100px;"><a href="#" class="help" title="Tooltip test text Tooltip test text Tooltip test text Tooltip test text Tooltip test text Tooltip test text">Hover me</a></p>
+	
+	<form action="#" method="get">
+		<input type="text" name="some_name" value="Some value" id="some_name" title="This field is required" class="help" />
+		<p><input type="submit" value="Continue &rarr;" /></p>
+	</form>
+	
+	<script type="text/javascript" charset="utf-8">
+		$$("ul .help").each( function(link) {
+			new Tooltip(link);
+		});
+		$$("p .help").each( function(input) {
+			new Tooltip(input, {});
+		});
+		$$("form input.help").each( function(input) {
+			new Tooltip(input, {backgroundColor: "#FC9", borderColor: "#C96", textColor: "#000", textShadowColor: "#FFF"});
+		});
+	</script>
+</body>
+</html>
