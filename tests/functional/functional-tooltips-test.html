@@ -8,7 +8,7 @@
 	<title>Tooltips Functional Test</title>
 	
 	<script type="text/javascript" src="../../lib/prototype.js"></script>
-	<script type="text/javascript" src="../../lib/scriptaculous.js"></script>
+	<script type="text/javascript" src="../../lib/scriptaculous.js?load=builder,effects"></script>
 	
 	<script type="text/javascript" src="../../tooltips.js"></script>
 	<link rel="stylesheet" href="../../tooltips.css" type="text/css" />
@@ -31,7 +31,7 @@
 		<li><p title="This is formatted text. &#013; Line breaks are used&#013;to format it." class="help">Link text...</p></li>
 	</ul>
 	
-	<p style="position:absolute; right: 10px; width:100px;"><a href="#" class="help" title="Tooltip test text Tooltip test text Tooltip test text Tooltip test text Tooltip test text Tooltip test text">Hover me</a></p>
+	<p style="position:absolute; right: 10px; width:300px;"><a href="#" class="help" title="Tooltip test text Tooltip test text Tooltip test text Tooltip test text Tooltip test text Tooltip test text">Hover me long-long way, baby!</a></p>
 	
 	<form action="#" method="get">
 		<input type="text" name="some_name" value="Some value" id="some_name" title="This field is required" class="help" />
@@ -40,7 +40,7 @@
 	
 	<script type="text/javascript" charset="utf-8">
 		$$("ul .help").each( function(link) {
-			new Tooltip(link);
+			new Tooltip(link, {mouseFollow: false});
 		});
 		$$("p .help").each( function(input) {
 			new Tooltip(input, {});

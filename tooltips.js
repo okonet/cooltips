@@ -31,6 +31,7 @@ Tooltip.prototype = {
 			maxWidth: 250,	// Default tooltip width
 			align: "left", // Default align
 			delay: 250, // Default delay before tooltip appears in ms
+			mouseFollow: true, // Tooltips follows the mouse moving
 			opacity: .75, // Default tooltips opacity
 			appearDuration: .25, // Default appear duration in sec
 			hideDuration: .25 // Default disappear duration in sec
@@ -38,23 +39,29 @@ Tooltip.prototype = {
 		Object.extend(this.options, options || {});
 	},
 	show: function(e) {
-		if(!this.initialized) {
-			this.xCord = Event.pointerX(e);
-			this.yCord = Event.pointerY(e);
+		this.xCord = Event.pointerX(e);
+		this.yCord = Event.pointerY(e);
+		if(!this.initialized)
 			this.timeout = window.setTimeout(this.appear.bind(this), this.options.delay);
-		}
 	},
 	hide: function(e) {
 		if(this.initialized) {
 			this.appearingFX.cancel();
+			if(this.options.mouseFollow)
+				Event.stopObserving(this.el, "mousemove", this.update.bindAsEventListener(this));
 			new Effect.Fade(this.tooltip, {duration: this.options.hideDuration, afterFinish: function() { Element.remove(this.tooltip) }.bind(this) });
 		}
 		this._clearTimeout(this.timeout);
+		
 		this.initialized = false;
+	},
+	update: function(e){
+		this.xCord = Event.pointerX(e);
+		this.yCord = Event.pointerY(e);
+		this.setup();
 	},
 	appear: function() {
 		// Building tooltip container
-		//this.tooltip = Builder.node("div", {className: "tooltip", style: "display: none; width: " + this.options.width + "px;" }, [
 		this.tooltip = Builder.node("div", {className: "tooltip", style: "display: none;" }, [
 			Builder.node("div", {className:"xtop"}, [
 				Builder.node("div", {className:"xb1", style:"background-color:" + this.options.borderColor + ";"}),
@@ -75,9 +82,21 @@ Tooltip.prototype = {
 		]);
 		document.body.insertBefore(this.tooltip, document.body.childNodes[0]);
 		
+		Element.extend(this.tooltip); // IE needs element to be manually extended
 		this.options.width = this.tooltip.getWidth();
+		this.tooltip.style.width = this.options.width + 'px'; // IE7 needs width to be defined
 		
-		if(this.options.width > this.options.maxWidth) {// If content width is more then allowed max width, set width to max
+		this.setup();
+		
+		if(this.options.mouseFollow)
+			Event.observe(this.el, "mousemove", this.update.bindAsEventListener(this));
+			
+		this.initialized = true;
+		this.appearingFX = new Effect.Appear(this.tooltip, {duration: this.options.appearDuration, to: this.options.opacity });
+	},
+	setup: function(){
+		// If content width is more then allowed max width, set width to max
+		if(this.options.width > this.options.maxWidth) {
 			this.options.width = this.options.maxWidth;
 			this.tooltip.style.width = this.options.width + 'px';
 		}
@@ -90,17 +109,6 @@ Tooltip.prototype = {
 		
 		this.tooltip.style.left = this.xCord - 7 + "px";
 		this.tooltip.style.top = this.yCord + 12 + "px";
-			
-		this.initialized = true;
-		this.appearingFX = new Effect.Appear(this.tooltip, {duration: this.options.appearDuration, to: this.options.opacity });
-	},
-	_getWindow: function () { //From: http://www.quirksmode.org/js/doctypes.html
-		var theTop;
-		if (document.documentElement && document.documentElement.scrollTop)
-			theTop = document.documentElement.scrollTop;
-		else if (document.body)
-			theTop = document.body.scrollTop;
-		return theTop;
 	},
 	_clearTimeout: function(timer) {
 		clearTimeout(timer);
