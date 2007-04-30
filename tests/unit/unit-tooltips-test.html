@@ -59,10 +59,14 @@
 		new Test.Unit.Runner({
 			
 		testTooltipsBasics: function() { with(this) {
+			assertEqual($('test1').title, 'Tooltip test text');
+			assertEqual($('img1').alt, 'Image description');
+			
 			var myTooltip1 = new Tooltip('test1');
+			
 			assertInstanceOf(Tooltip, myTooltip1);
-			assertEqual($('test1').title, '');
-			assertEqual($('img1').alt, '');
+			assertEqual($('test1').title, '', 'Title should be empty');
+			assertEqual($('img1').alt, '', 'Alt attribute should be empty');
 		}},
 		testTooltipsDisplay: function() { with(this) {
 			var myTooltip2 = new Tooltip('test2');
