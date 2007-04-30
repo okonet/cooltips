@@ -7,10 +7,11 @@ Tooltip.prototype = {
 		this.setOptions(options);
 		
 		// Event handlers
-		this.show = this.show.bindAsEventListener(this);
-		this.hide = this.hide.bindAsEventListener(this);
-		Event.observe(this.el, "mouseover", this.show );
-		Event.observe(this.el, "mouseout", this.hide );
+		this.showEvent = this.show.bindAsEventListener(this);
+		this.hideEvent = this.hide.bindAsEventListener(this);
+		this.updateEvent = this.update.bindAsEventListener(this);
+		Event.observe(this.el, "mouseover", this.showEvent );
+		Event.observe(this.el, "mouseout", this.hideEvent );
 		
 		// Removing title from DOM element to avoid showing it
 		this.content = this.el.title;
@@ -48,7 +49,7 @@ Tooltip.prototype = {
 		if(this.initialized) {
 			this.appearingFX.cancel();
 			if(this.options.mouseFollow)
-				Event.stopObserving(this.el, "mousemove", this.update.bindAsEventListener(this));
+				Event.stopObserving(this.el, "mousemove", this.updateEvent);
 			new Effect.Fade(this.tooltip, {duration: this.options.hideDuration, afterFinish: function() { Element.remove(this.tooltip) }.bind(this) });
 		}
 		this._clearTimeout(this.timeout);
@@ -89,7 +90,7 @@ Tooltip.prototype = {
 		this.setup();
 		
 		if(this.options.mouseFollow)
-			Event.observe(this.el, "mousemove", this.update.bindAsEventListener(this));
+			Event.observe(this.el, "mousemove", this.updateEvent);
 			
 		this.initialized = true;
 		this.appearingFX = new Effect.Appear(this.tooltip, {duration: this.options.appearDuration, to: this.options.opacity });

@@ -35,7 +35,7 @@
 	
 	<form action="#" method="get">
 		<input type="text" name="some_name" value="Some value" id="some_name" title="This field is required" class="help" />
-		<p><input type="submit" value="Continue &rarr;" /></p>
+		<p><input type="submit" value="Continue &rarr;" title="Some title" /></p>
 	</form>
 	
 	<script type="text/javascript" charset="utf-8">
@@ -43,7 +43,7 @@
 			new Tooltip(link, {mouseFollow: false});
 		});
 		$$("p .help").each( function(input) {
-			new Tooltip(input, {});
+			new Tooltip(input, {backgroundColor: "#333", borderColor: "#333", textColor: "#FFF", textShadowColor: "#000"});
 		});
 		$$("form input.help").each( function(input) {
 			new Tooltip(input, {backgroundColor: "#FC9", borderColor: "#C96", textColor: "#000", textShadowColor: "#FFF"});
