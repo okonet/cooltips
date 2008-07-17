@@ -63,25 +63,37 @@ Tooltip.prototype = {
 	},
 	appear: function() {
 		// Building tooltip container
-		this.tooltip = Builder.node("div", {className: "tooltip", style: "display: none;" }, [
-			Builder.node("div", {className:"xtop"}, [
-				Builder.node("div", {className:"xb1", style:"background-color:" + this.options.borderColor + ";"}),
-				Builder.node("div", {className:"xb2", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";"}),
-				Builder.node("div", {className:"xb3", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";"}),
-				Builder.node("div", {className:"xb4", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";"})
-			]),
-			Builder.node("div", {className: "xboxcontent", style: "background-color:" + this.options.backgroundColor + 
-				"; border-color:" + this.options.borderColor + 
-				((this.options.textColor != '') ? "; color:" + this.options.textColor : "") + 
-				((this.options.textShadowColor != '') ? "; text-shadow:2px 2px 0" + this.options.textShadowColor + ";" : "")}, this.content), 
-			Builder.node("div", {className:"xbottom"}, [
-				Builder.node("div", {className:"xb4", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";"}),
-				Builder.node("div", {className:"xb3", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";"}),
-				Builder.node("div", {className:"xb2", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";"}),
-				Builder.node("div", {className:"xb1", style:"background-color:" + this.options.borderColor + ";"})
-			]),
-		]);
-		document.body.insertBefore(this.tooltip, document.body.childNodes[0]);
+		this.tooltip = new Element("div", { className: "tooltip", style: "display: none" });
+		
+		var top = new Element("div", { className: "xtop" }).insert(
+			new Element("div", { className: "xb1", style: "background-color:" + this.options.borderColor + ";" })
+		).insert(
+			new Element("div", { className: "xb2", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";" })
+		).insert(
+			new Element("div", { className: "xb3", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";" })
+		).insert(
+			new Element("div", { className: "xb4", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";" })
+		);
+		
+		var bottom = new Element("div", { className: "xbottom" }).insert(
+			new Element("div", { className: "xb4", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";" })
+		).insert(
+			new Element("div", { className: "xb3", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";" })
+		).insert(
+			new Element("div", { className: "xb2", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + ";" })
+		).insert(
+			new Element("div", { className: "xb1", style:"background-color:" + this.options.borderColor + ";" })
+		);
+		
+		var content = new Element("div", { className: "xboxcontent", style: "background-color:" + this.options.backgroundColor + "; border-color:" + this.options.borderColor + 
+			((this.options.textColor != '') ? "; color:" + this.options.textColor : "") + 
+			((this.options.textShadowColor != '') ? "; text-shadow:2px 2px 0" + this.options.textShadowColor + ";" : "") }).update(this.content);
+			
+		// Building and injecting tooltip into DOM
+		this.tooltip.insert({'bottom':top});
+		this.tooltip.insert({'bottom':content});
+		this.tooltip.insert({'bottom':bottom});
+		$(document.body).insert({'top':this.tooltip});
 		
 		Element.extend(this.tooltip); // IE needs element to be manually extended
 		this.options.width = this.tooltip.getWidth();
