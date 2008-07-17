@@ -65,6 +65,8 @@ Tooltip.prototype = {
 		// Building tooltip container
 		this.tooltip = new Element("div", { className: "tooltip", style: "display: none" });
 		
+		var arrow = new Element("div", { className: "xarrow" }).insert('<b class="a1"></b><b class="a2"></b><b class="a3"></b><b class="a4"></b><b class="a5"></b><b class="a6"></b>');
+		
 		var top = new Element("div", { className: "xtop" }).insert(
 			new Element("div", { className: "xb1", style: "background-color:" + this.options.borderColor + ";" })
 		).insert(
@@ -90,10 +92,16 @@ Tooltip.prototype = {
 			((this.options.textShadowColor != '') ? "; text-shadow:2px 2px 0" + this.options.textShadowColor + ";" : "") }).update(this.content);
 			
 		// Building and injecting tooltip into DOM
-		this.tooltip.insert({'bottom':top});
-		this.tooltip.insert({'bottom':content});
-		this.tooltip.insert({'bottom':bottom});
+		this.tooltip.insert(arrow).insert(top).insert(content).insert(bottom);
 		$(document.body).insert({'top':this.tooltip});
+		
+		// Coloring arrow element
+		this.tooltip.select('.xarrow b').each(function(el){
+			if(!el.hasClassName('a1'))
+				el.setStyle({backgroundColor: this.options.backgroundColor, borderColor: this.options.borderColor });
+			else
+				el.setStyle({backgroundColor: this.options.borderColor });
+		}.bind(this));
 		
 		Element.extend(this.tooltip); // IE needs element to be manually extended
 		this.options.width = this.tooltip.getWidth();
@@ -118,6 +126,10 @@ Tooltip.prototype = {
 		if(this.xCord + this.options.width >= Element.getWidth(document.body)) {
 			this.options.align = "right";
 			this.xCord = this.xCord - this.options.width + 20;
+			this.tooltip.down('.xarrow').setStyle({left: this.options.width - 24 + 'px'});
+		} else {
+			this.options.align = "left";
+			this.tooltip.down('.xarrow').setStyle({left: 12 + 'px'});
 		}
 		
 		this.tooltip.style.left = this.xCord - 7 + "px";

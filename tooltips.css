@@ -15,6 +15,27 @@
 	.tooltip .xb2 { margin: 0 3px; border-width: 0 2px; }
 	.tooltip .xb3 { margin: 0 2px; }
 	.tooltip .xb4 { height: 2px; margin: 0 1px; }
+	
+	.tooltip .xarrow {
+		position: relative;
+		top: 2px; left: 12px;
+		width: 11px;
+		height: 7px;
+	}
+		.tooltip .xarrow b {
+			display: block;
+			background:#666;
+			border-left:1px solid #333;
+			border-right:1px solid #333;
+			font-size:1px;
+			height: 1px;
+		}
+		.tooltip .xarrow .a1 { margin: 0 5px; background-color: #333; border: 0 solid; width: 1px; }
+		.tooltip .xarrow .a2 { width: 1px; margin: 0 4px;}
+		.tooltip .xarrow .a3 { width: 3px; margin: 0 3px;}
+		.tooltip .xarrow .a4 { width: 5px; margin: 0 2px;}
+		.tooltip .xarrow .a5 { width: 7px; margin: 0 1px;}
+		.tooltip .xarrow .a6 { width: 9px; margin: 0 0px;}
 
 	.tooltip .xboxcontent {
 		padding: 0 .5em;
