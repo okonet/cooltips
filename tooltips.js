@@ -1,4 +1,15 @@
-// Tooltip Object
+// Tooltips Class
+// A superclass to work with simple CSS selectors
+var Tooltips = Class.create();
+Tooltips.prototype = {
+	initialize: function(selector, options) {
+		var tooltips = $$(selector);
+		tooltips.each( function(tooltip) {
+			new Tooltip(tooltip, options);
+		});
+	}
+};
+// Tooltip Class
 var Tooltip = Class.create();
 Tooltip.prototype = {
 	initialize: function(el, options) {
