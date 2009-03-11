@@ -25,7 +25,7 @@ Tooltip.prototype = {
 		Event.observe(this.el, "mouseout", this.hideEvent );
 		
 		// Removing title from DOM element to avoid showing it
-		this.content = this.el.title;
+		this.content = this.el.title.stripScripts().strip();
 		this.el.title = "";
 
 		// If descendant elements has 'alt' attribute defined, clear it
@@ -115,7 +115,7 @@ Tooltip.prototype = {
 		}.bind(this));
 		
 		Element.extend(this.tooltip); // IE needs element to be manually extended
-		this.options.width = this.tooltip.getWidth();
+		this.options.width = this.tooltip.getWidth() + 1; // Quick fix for Firefox 3
 		this.tooltip.style.width = this.options.width + 'px'; // IE7 needs width to be defined
 		
 		this.setup();
