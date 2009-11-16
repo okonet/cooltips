@@ -24,6 +24,14 @@ Tooltip.prototype = {
 		Event.observe(this.el, "mouseover", this.showEvent );
 		Event.observe(this.el, "mouseout", this.hideEvent );
 		
+		// Content for Tooltip is either given through 
+		// 'content' option or 'title' attribute of the trigger element. If 'content' is present, then 'title' attribute is ignored.
+		// 'content' is an element or the id of an element from which the innerHTML is taken as content of the tooltip
+		if (options && options['content']) {
+			this.content = $(options['content']).innerHTML;
+		} else {
+			this.content = this.el.title.stripScripts().strip();
+		}
 		// Removing title from DOM element to avoid showing it
 		this.content = this.el.title.stripScripts().strip();
 		this.el.title = "";
